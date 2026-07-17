@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (C) Amaiza LLC. - All Rights Reserved
  *
@@ -10,27 +12,9 @@
  *
  */
 
-const js = require('@eslint/js');
-const globals = require('globals');
-
-module.exports = [
-  js.configs.recommended,
-  {
-    files: ['eslint.config.js'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        app: 'readonly',
-      },
-    },
-  },
-  {
-    ignores: ['node_modules/', 'vendor/'],
-  },
-];
+$dictionary['MyModule']['fields']['mail_tracking_number']['name'] = 'mail_tracking_number';
+$dictionary['MyModule']['fields']['mail_tracking_number']['vname'] = 'LBL_MAIL_TRACKING_NUMBER';
+$dictionary['MyModule']['fields']['mail_tracking_number']['type'] = 'varchar';
+$dictionary['MyModule']['fields']['mail_tracking_number']['len'] = '255';
+$dictionary['MyModule']['fields']['mail_tracking_number']['required'] = false;
+$dictionary['MyModule']['fields']['mail_tracking_number']['audited'] = true;

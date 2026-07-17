@@ -1,0 +1,65 @@
+<?php
+
+/*
+ * Copyright (C) Amaiza LLC. - All Rights Reserved
+ *
+ * This source code is proprietary and confidential and protected under
+ * international copyright law. All rights reserved and protected by
+ * the copyright holders. This file is only available to authorized individuals
+ * with the permission of the copyright holders. Unauthorized copying of this file,
+ * via any medium is strictly prohibited. If you encounter this file and do not have
+ * permission, please contact the copyright holders and delete this file.
+ *
+ */
+
+$sugar_config_si = [
+    'setup_site_specify_guid' => true,
+    'setup_site_guid' => '<site-guid>',
+    'setup_site_url' => 'https://<domain>/sugar',
+    'setup_system_name' => '<system-name>',
+    'site_default_theme' => 'RacerX',
+    'setup_site_sugarbeet' => false,
+    'setup_site_defaults' => false,
+    'setup_site_log_level' => 'error',
+    'setup_site_log_dir' => 'logs',
+    'setup_license_accept' => true,
+    'demoData' => false,
+    'setup_db_type' => 'mysql',
+    'setup_db_host_name' => '<database-host>',
+    'setup_db_port_num' => 3306,
+    'setup_db_database_name' => '<database-name>',
+    'setup_db_admin_user_name' => '<database-admin-user>',
+    'setup_db_admin_password' => '<database-admin-password>',
+    'setup_db_manager' => 'MysqliManager',
+    'setup_db_options' => [
+        'ssl' => false,
+        'debug' => 0,
+        'persistent' => false,
+        'autofree' => false,
+        'collation' => 'utf8_general_ci',
+    ],
+    'setup_db_drop_tables' => false,
+    'setup_db_create_database' => true,
+    'setup_site_admin_user_name' => 'admin',
+    'setup_site_admin_password' => '<site-admin-password>',
+    'setup_license_key' => '<license-key>',
+    'setup_license_key_users' => '<licensed-user-count>',
+    'setup_license_key_expire_date' => '<license-expiration-date>',
+    'setup_license_key_oc_licences' => '<on-demand-license-count>',
+    'setup_fts_type' => 'Elastic',
+    'setup_fts_host' => '<elasticsearch-host>',
+    'setup_fts_port' => 9200,
+    'default_currency_iso4217' => 'USD',
+    'default_currency_name' => 'US Dollars',
+    'default_currency_significant_digits' => '2',
+    'default_currency_symbol' => '$',
+    'default_date_format' => 'Y-m-d',
+    'default_time_format' => 'H:i',
+    'default_decimal_seperator' => '.',
+    'default_export_charset' => 'ISO-8859-1',
+    'default_language' => 'en_us',
+    'default_locale_name_format' => 's f l',
+    'default_number_grouping_seperator' => ',',
+    'export_delimiter' => ',',
+    'app_env' => 'DEV',
+];

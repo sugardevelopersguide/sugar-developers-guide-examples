@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (C) Amaiza LLC. - All Rights Reserved
  *
@@ -10,27 +12,22 @@
  *
  */
 
-const js = require('@eslint/js');
-const globals = require('globals');
+$viewdefs['Accounts']['base']['view']['record']['panels'][] = [
+    'name' => 'panel_custom',
+    'label' => 'LBL_PANEL_CUSTOM',
+    'columns' => 2,
+    'fields' => [
+        'industry',
+        'phone_office',
+    ],
+];
 
-module.exports = [
-  js.configs.recommended,
-  {
-    files: ['eslint.config.js'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        app: 'readonly',
-      },
-    },
-  },
-  {
-    ignores: ['node_modules/', 'vendor/'],
-  },
+$viewdefs['Accounts']['base']['view']['record']['buttons'][] = [
+    'type' => 'rowaction',
+    'event' => 'button:sync_external:click',
+    'name' => 'sync_external',
+    'label' => 'LBL_SYNC_EXTERNAL',
+    'css_class' => 'btn btn-primary',
+    'showOn' => 'view',
+    'acl_action' => 'edit',
 ];

@@ -15,20 +15,33 @@
 
 declare(strict_types=1);
 
-const PACKAGE_ID = 'SugarDevelopersGuideExtensionFrameworkExamples';
-const PACKAGE_LABEL = 'Sugar Developers Guide | Extension Framework Examples';
+$topic = $argv[1] ?? null;
+$version = $argv[2] ?? null;
 
-$version = $argv[1] ?? null;
-
-if ($version === null || !preg_match('/^\d+\.\d+\.\d+$/', $version)) {
-    exit("Usage: php extension-framework/bin/pack.php <major.minor.patch>\n");
+if ($topic === null || $version === null || !preg_match('/^\d+\.\d+\.\d+$/', $version)) {
+    exit("Usage: php bin/pack.php <topic> <major.minor.patch>\n");
 }
 
-$projectRoot = dirname(__DIR__, 2);
-$exampleRoot = dirname(__DIR__);
-$buildDirectory = $exampleRoot . '/builds';
-$archivePath = sprintf('%s/%s_%s.zip', $buildDirectory, strtolower(PACKAGE_ID), $version);
-$contactPriorityRoot = $exampleRoot . '/package/contact-priority';
+if (basename($topic) !== $topic) {
+    exit("Topic must be a top-level directory name.\n");
+}
+
+$projectRoot = dirname(__DIR__);
+$topicRoot = $projectRoot . '/' . $topic;
+$customRoot = $topicRoot . '/custom';
+
+if (!is_dir($topicRoot) || !is_dir($customRoot)) {
+    exit("Unknown package topic: {$topic}\n");
+}
+
+$topicConfig = getTopicConfiguration($topic);
+$buildDirectory = $topicRoot . '/builds';
+$archivePath = sprintf(
+    '%s/%s_%s.zip',
+    $buildDirectory,
+    strtolower($topicConfig['package_id']),
+    $version
+);
 
 if (file_exists($archivePath)) {
     exit("Build already exists: {$archivePath}\n");
@@ -38,30 +51,7 @@ if (!is_dir($buildDirectory) && !mkdir($buildDirectory, 0755, true) && !is_dir($
     exit("Unable to create build directory: {$buildDirectory}\n");
 }
 
-$manifest = [];
-$installdefs = [];
-require $contactPriorityRoot . '/manifest.php';
-
-$manifest = array_replace($manifest, [
-    'id' => PACKAGE_ID,
-    'name' => PACKAGE_LABEL,
-    'description' => 'Installable examples for Sugar Extension Framework customizations.',
-    'version' => $version,
-    'author' => 'Sugar Developers Guide',
-    'is_uninstallable' => true,
-    'built_in_version' => '26.1.0',
-    'published_date' => date('Y-m-d H:i:s'),
-    'type' => 'module',
-    'remove_tables' => false,
-    'acceptable_sugar_versions' => [
-        'regex_matches' => ['^26\\.(.*?)\\.(.*?)'],
-    ],
-    'acceptable_sugar_flavors' => ['PRO', 'ENT', 'ULT'],
-]);
-
-$installdefs['id'] = PACKAGE_ID;
-$installdefs['copy'] = [];
-
+[$manifest, $installdefs] = loadTopicMetadata($topicRoot, $topicConfig, $version);
 $zip = new ZipArchive();
 
 if ($zip->open($archivePath, ZipArchive::CREATE | ZipArchive::EXCL) !== true) {
@@ -69,8 +59,15 @@ if ($zip->open($archivePath, ZipArchive::CREATE | ZipArchive::EXCL) !== true) {
 }
 
 try {
-    addDirectory($zip, $contactPriorityRoot . '/Extension', 'Extension');
-    addCustomSources($zip, $exampleRoot . '/custom', $installdefs);
+    if ($topicConfig['metadata_directory'] !== null) {
+        addDirectory(
+            $zip,
+            $topicRoot . '/' . $topicConfig['metadata_directory'] . '/Extension',
+            'Extension'
+        );
+    }
+
+    addCustomSources($zip, $customRoot, $installdefs);
 
     if (!$zip->addFile($projectRoot . '/LICENSE', 'LICENSE.txt')) {
         throw new RuntimeException('Unable to add LICENSE.txt to the archive.');
@@ -90,8 +87,69 @@ try {
 echo "Created {$archivePath}\n";
 
 /**
- * Add all deployable package files beneath a directory.
+ * @return array{package_id: string, package_label: string, metadata_directory: string|null}
  */
+function getTopicConfiguration(string $topic): array
+{
+    $configurations = [
+        'extension-framework' => [
+            'package_id' => 'SugarDevelopersGuideExtensionFrameworkExamples',
+            'package_label' => 'Sugar Developers Guide | Extension Framework Examples',
+            'metadata_directory' => 'package/contact-priority',
+        ],
+    ];
+
+    if (isset($configurations[$topic])) {
+        return $configurations[$topic];
+    }
+
+    $label = ucwords(str_replace('-', ' ', $topic));
+
+    return [
+        'package_id' => 'SugarDevelopersGuide' . str_replace(' ', '', $label) . 'Examples',
+        'package_label' => 'Sugar Developers Guide | ' . $label . ' Examples',
+        'metadata_directory' => null,
+    ];
+}
+
+/**
+ * @param array{package_id: string, package_label: string, metadata_directory: string|null} $topicConfig
+ * @return array{0: array<string, mixed>, 1: array<string, mixed>}
+ */
+function loadTopicMetadata(string $topicRoot, array $topicConfig, string $version): array
+{
+    $manifest = [];
+    $installdefs = [];
+
+    if ($topicConfig['metadata_directory'] !== null) {
+        require $topicRoot . '/' . $topicConfig['metadata_directory'] . '/manifest.php';
+    }
+
+    $manifest = array_replace($manifest, [
+        'id' => $topicConfig['package_id'],
+        'name' => $topicConfig['package_label'],
+        'description' => 'Installable examples for Sugar customizations.',
+        'version' => $version,
+        'author' => 'Sugar Developers Guide',
+        'is_uninstallable' => true,
+        'built_in_version' => '26.1.0',
+        'published_date' => date('Y-m-d H:i:s'),
+        'type' => 'module',
+        'remove_tables' => false,
+        'acceptable_sugar_versions' => [
+            'regex_matches' => ['^26\\.(.*?)\\.(.*?)'],
+        ],
+        'acceptable_sugar_flavors' => ['PRO', 'ENT', 'ULT'],
+    ]);
+
+    $installdefs = array_replace($installdefs, [
+        'id' => $topicConfig['package_id'],
+        'copy' => [],
+    ]);
+
+    return [$manifest, $installdefs];
+}
+
 function addDirectory(ZipArchive $zip, string $sourceDirectory, string $archiveDirectory): void
 {
     $files = new RecursiveIteratorIterator(
@@ -118,8 +176,6 @@ function addDirectory(ZipArchive $zip, string $sourceDirectory, string $archiveD
 }
 
 /**
- * Add custom sources and generate their installer definitions.
- *
  * @param array<string, mixed> $installdefs
  */
 function addCustomSources(ZipArchive $zip, string $customDirectory, array &$installdefs): void
@@ -172,11 +228,9 @@ function getLanguageDefinition(string $archivePath): ?array
         return null;
     }
 
-    $module = $matches[1] !== '' ? $matches[1] : 'application';
-
     return [
         'from' => '<basepath>/' . $archivePath,
-        'to_module' => $module,
+        'to_module' => ($matches[1] ?? '') !== '' ? $matches[1] : 'application',
         'language' => $matches[2],
     ];
 }

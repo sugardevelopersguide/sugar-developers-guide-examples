@@ -10,6 +10,7 @@ copy-ready, upgrade-safe Sugar customization examples.
 - [Layouts and Views](layouts-and-views/README.md)
 - [Logic Hooks](logic-hooks/README.md)
 - [Scheduler Jobs](scheduler-jobs/README.md)
+- [Installation](installation/README.md)
 
 ## Development tools
 

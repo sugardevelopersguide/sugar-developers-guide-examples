@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (C) Amaiza LLC. - All Rights Reserved
  *
@@ -10,27 +12,10 @@
  *
  */
 
-const js = require('@eslint/js');
-const globals = require('globals');
-
-module.exports = [
-  js.configs.recommended,
-  {
-    files: ['eslint.config.js'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        app: 'readonly',
-      },
-    },
-  },
-  {
-    ignores: ['node_modules/', 'vendor/'],
-  },
+$viewdefs['JobQueue']['base']['menu']['header'][] = [
+    'route' => '#JobQueue/layout/kickoff',
+    'label' => 'LBL_KICKOFF_LINK_LABEL',
+    'acl_action' => 'admin',
+    'acl_module' => '',
+    'icon' => 'sicon-process-definitions-lg',
 ];

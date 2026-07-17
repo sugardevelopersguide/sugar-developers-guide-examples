@@ -34,7 +34,7 @@ Build an installable archive from this example's `custom/` sources and Contact
 Priority package metadata:
 
 ```sh
-php extension-framework/bin/pack.php 26.7.0
+php bin/pack.php extension-framework 26.7.0
 ```
 
 The archive is written to `extension-framework/builds/`. Its package version is
