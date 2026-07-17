@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (C) Amaiza LLC. - All Rights Reserved
  *
@@ -10,26 +12,10 @@
  *
  */
 
-const js = require('@eslint/js');
-const globals = require('globals');
-
-module.exports = [
-  js.configs.recommended,
-  {
-    files: ['eslint.config.js'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-    },
-  },
-  {
-    ignores: ['node_modules/', 'vendor/'],
-  },
+$hook_array['job_failure'][] = [
+    120,
+    'job failed',
+    null,
+    'Sugarcrm\\Sugarcrm\\custom\\modules\\SchedulersJobs\\LogicHooks\\SchedulersJobsLogicHooks',
+    'sendJobFailureNotification',
 ];

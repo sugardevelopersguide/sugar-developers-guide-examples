@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (C) Amaiza LLC. - All Rights Reserved
  *
@@ -10,26 +12,6 @@
  *
  */
 
-const js = require('@eslint/js');
-const globals = require('globals');
-
-module.exports = [
-  js.configs.recommended,
-  {
-    files: ['eslint.config.js'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-    },
-  },
-  {
-    ignores: ['node_modules/', 'vendor/'],
-  },
-];
+$beanList['amaiza_Substack'] = 'amaiza_Substack';
+$beanFiles['amaiza_Substack'] = 'modules/amaiza_Substack/amaiza_Substack.php';
+$modules_exempt_from_availability_check['amaiza_Substack'] = 'amaiza_Substack';

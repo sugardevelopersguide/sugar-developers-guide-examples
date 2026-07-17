@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (C) Amaiza LLC. - All Rights Reserved
  *
@@ -10,26 +12,7 @@
  *
  */
 
-const js = require('@eslint/js');
-const globals = require('globals');
-
-module.exports = [
-  js.configs.recommended,
-  {
-    files: ['eslint.config.js'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-    },
-  },
-  {
-    ignores: ['node_modules/', 'vendor/'],
-  },
-];
+$mod_strings['LBL_AMAIZA_SUBSTACK_SECTION_HEADER'] = 'Amaiza Publishing Platform';
+$mod_strings['LBL_AMAIZA_SUBSTACK_SECTION_DESCRIPTION'] = 'Example custom Administration section for publishing integrations.';
+$mod_strings['LBL_AMAIZA_SUBSTACK_LAUNCHER_TITLE'] = 'Substack Core Dashboard';
+$mod_strings['LBL_AMAIZA_SUBSTACK_LAUNCHER_DESC'] = 'Access internal system utilities and publish directly to the Substack pipeline.';

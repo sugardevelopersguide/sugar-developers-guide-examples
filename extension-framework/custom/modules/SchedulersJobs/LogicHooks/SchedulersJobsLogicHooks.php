@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (C) Amaiza LLC. - All Rights Reserved
  *
@@ -10,26 +12,16 @@
  *
  */
 
-const js = require('@eslint/js');
-const globals = require('globals');
+namespace Sugarcrm\Sugarcrm\custom\modules\SchedulersJobs\LogicHooks;
 
-module.exports = [
-  js.configs.recommended,
-  {
-    files: ['eslint.config.js'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-    },
-  },
-  {
-    ignores: ['node_modules/', 'vendor/'],
-  },
-];
+class SchedulersJobsLogicHooks
+{
+    public function sendJobFailureNotification($bean, $event, $arguments): void
+    {
+        $jobName = $bean->name ?? $bean->id;
+
+        $GLOBALS['log']->warning(
+            sprintf('Scheduler job "%s" reached its final failure.', $jobName)
+        );
+    }
+}

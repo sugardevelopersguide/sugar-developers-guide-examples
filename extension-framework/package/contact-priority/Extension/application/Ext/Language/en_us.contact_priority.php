@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (C) Amaiza LLC. - All Rights Reserved
  *
@@ -10,26 +12,8 @@
  *
  */
 
-const js = require('@eslint/js');
-const globals = require('globals');
-
-module.exports = [
-  js.configs.recommended,
-  {
-    files: ['eslint.config.js'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-    },
-  },
-  {
-    ignores: ['node_modules/', 'vendor/'],
-  },
+$app_list_strings['contact_priority_list'] = [
+    'low' => 'Low',
+    'medium' => 'Medium',
+    'high' => 'High',
 ];

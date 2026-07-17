@@ -1,3 +1,5 @@
+<?php
+
 /*
  * Copyright (C) Amaiza LLC. - All Rights Reserved
  *
@@ -10,26 +12,10 @@
  *
  */
 
-const js = require('@eslint/js');
-const globals = require('globals');
-
-module.exports = [
-  js.configs.recommended,
-  {
-    files: ['eslint.config.js'],
-    languageOptions: {
-      globals: globals.node,
-    },
-  },
-  {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-    },
-  },
-  {
-    ignores: ['node_modules/', 'vendor/'],
-  },
+// Intentionally incorrect: this does not create a Studio-compliant custom field.
+// Use Studio or a Module Loadable Package custom_fields definition instead.
+$dictionary['Contacts']['fields']['custom_priority_c'] = [
+    'name' => 'custom_priority_c',
+    'type' => 'enum',
+    'options' => 'contact_priority_list',
 ];
