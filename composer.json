@@ -1,0 +1,21 @@
+{
+  "name": "sugar-developers-guide/examples",
+  "description": "Companion examples for the Sugar Developers Guide.",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.4"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^2.2",
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "squizlabs/php_codesniffer": "^4.0",
+    "phpunit/phpunit": "^13.2"
+  },
+  "scripts": {
+    "format": "php-cs-fixer fix",
+    "format:check": "php-cs-fixer fix --dry-run --diff",
+    "analyse": "phpstan analyse",
+    "test": "phpunit"
+  }
+}
