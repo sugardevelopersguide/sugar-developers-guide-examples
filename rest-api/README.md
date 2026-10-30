@@ -5,6 +5,10 @@ API does not return the output an integration needs. This is an original example
 using only the built-in Accounts module and stock fields. It adds no custom
 modules, external services, or database changes.
 
+The example uses the repository's [MIT license](../LICENSE). You may use, copy,
+and adapt the code. Keep the copyright and license notice with copies or
+substantial parts of the code.
+
 ## Start here
 
 - [Read the article](article.md).
@@ -12,7 +16,7 @@ modules, external services, or database changes.
 - [Open the readiness service](custom/modules/Accounts/Services/AccountReadinessService.php).
 - [Open the platform registration](custom/Extension/application/Ext/Platforms/sdg_examples.php).
 - [Run the PHP client](examples/account_summary.php) (PHP 8.2 or later, with cURL).
-- [Download the installable ZIP](builds/sugardevelopersguideaccountsrestapiexample_1.0.0.zip).
+- [Download the installable ZIP](builds/sugardevelopersguideaccountsrestapiexample_1.0.1.zip).
 - [Review the service unit tests](tests/unit/AccountReadinessServiceTest.php),
   [endpoint checks](tests/run.php), [client tests](tests/client.php), and
   [live integration tests](tests/integration/AccountSummaryEndpointTest.php).
@@ -118,8 +122,9 @@ Keep only one copy of the class so Sugar does not load it twice.
    downloads the repository, which is not a Module Loader package.
 2. In Sugar, open **Admin → Module Loader**, upload the topic ZIP, and install it.
 3. Run **Admin → Repair → Quick Repair and Rebuild** to register `sdg_examples`.
-4. Open `https://YOUR-SUGAR/rest/v11/help` and find the SDG summary route. If the
-   route is missing, use **Admin → Repair → Rebuild API Metadata** where available.
+4. Open `https://YOUR-SUGAR/rest/v11/help` and find the SDG summary route. Quick
+   Repair and Rebuild clears Sugar's cached list of API endpoints. If the route
+   is missing, check the file paths and class name, then run that repair again.
 5. Try the client below with a sandbox Account the test user can view.
 
 ### Copy source files (on-site development)
@@ -189,10 +194,9 @@ account data are included.
 | Valid visible Account, all source fields readable | 200; nested response                                  |
 | Required field blank                              | 200; `ready: false`, field listed in `missing_fields` |
 | Website blank, required fields populated          | 200; `website: ""`, `ready: true`                     |
-| Missing required argument (direct handler call)   | 422; `missing_parameter`                              |
 | Unknown record ID                                 | 404; `not_found`                                      |
 | Record denied by ACL                              | 403, or 404 if normal retrieval cannot see it         |
-| Account outside user's teams                      | No account data; ordinarily 404 at retrieval          |
+| Account hidden by team security                   | 404; `not_found` during normal retrieval              |
 | Required source field omitted by built-in API     | 200; field value and handoff result are `null`        |
 | Missing/expired token                             | Authentication rejects request before handler runs    |
 
@@ -273,7 +277,7 @@ supported by your Sugar server for the endpoint itself.
 Rebuild the topic package from the repository root with a new version number:
 
 ```sh
-php bin/pack.php rest-api 1.0.1
+php bin/pack.php rest-api 1.0.2
 ```
 
 Only `custom/` files and the repository license are included by the existing

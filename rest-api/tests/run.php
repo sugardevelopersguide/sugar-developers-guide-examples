@@ -1,14 +1,8 @@
 <?php
 
 /*
- * Copyright (C) Amaiza LLC. - All Rights Reserved
- *
- * This source code is proprietary and confidential and protected under
- * international copyright law. All rights reserved and protected by
- * the copyright holders. This file is only available to authorized individuals
- * with the permission of the copyright holders. Unauthorized copying of this file,
- * via any medium is strictly prohibited. If you encounter this file and do not have
- * permission, please contact the copyright holders and delete this file.
+ * Copyright (c) 2026 Sugar Developers Guide
+ * SPDX-License-Identifier: MIT
  */
 
 // Test the API and real service together, with a stand-in for Sugar's retrieval.
@@ -43,7 +37,7 @@ $record = [
 ModuleApi::$response = $record;
 $invoke = fn ($args) => $api->getAccountSummary(null, $args);
 $result = $invoke(['record' => $id, 'module' => 'Contacts', 'fields' => ['description']]);
-check(ModuleApi::$calls === [[null, ['record' => $id, 'module' => 'Accounts', 'fields' => $fields]]], 'Delegate to built-in record API with fixed module and fields');
+check(ModuleApi::$calls === [[null, ['record' => $id, 'module' => 'Accounts', 'fields' => implode(',', $fields)]]], 'Delegate to built-in record API with fixed module and comma-separated fields');
 check($result === [
     'schema_version' => 1,
     'account' => ['id' => $id, 'name' => 'Example Account'],
@@ -57,7 +51,7 @@ foreach ([[], ['record' => 'example-record-id'], ['record' => '']] as $args) {
     $invoke($args);
     $expected = $args;
     $expected['module'] = 'Accounts';
-    $expected['fields'] = $fields;
+    $expected['fields'] = implode(',', $fields);
     check(end(ModuleApi::$calls) === [null, $expected], 'No custom GUID format rule or replacement record');
 }
 foreach (['missing argument', 'record not found', 'record access denied'] as $message) {
